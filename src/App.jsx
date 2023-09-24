@@ -1,18 +1,20 @@
-import { React } from "react";
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Home from './components/Home';
 import PetList from './components/PetList';
+import PetDetail from './components/PetDetail';
+import PetForm from './components/PetForm';
 
 
-  function App() {
-    return (
-      <Router>
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/pets" component={PetList} />
-        </Switch>
-      </Router>
-    );
-  }
-  
-  export default App;
+function App() {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/" exact component={PetList} />
+        <Route path="/detail/:id" component={PetDetail} />
+        <Route path="/search" component={PetForm} />
+      </Switch>
+    </Router>
+  );
+}
+
+export default App;

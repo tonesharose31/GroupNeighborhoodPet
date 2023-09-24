@@ -3,20 +3,18 @@ import React, { useEffect, useState } from 'react';
 const PetList = () => {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const API_KEY = import.meta.env.VITE_API_KEY; // Access the API key from environment variable
-  const API_ENDPOINT = 'https://api.petfinder.com/v2/your-endpoint-here';
+  const API_KEY = import.meta.env.VITE_API_KEY; 
+  const CLIENT_SECRET = import.meta.env.VITE_CLIENT_SECRET;
+  const API_ENDPOINT = 'https://api.petfinder.com/v2/animals?type=dog&page=4';
   const TOKEN_ENDPOINT = 'https://api.petfinder.com/v2/oauth2/token';
-  const CLIENT_ID = 'your_client_id_here';
-  const CLIENT_SECRET = 'your_client_secret_here';
 
-  // Function to obtain an access token
   const getAccessToken = async () => {
     const response = await fetch(TOKEN_ENDPOINT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`,
+      body: `grant_type=client_credentials&client_id=${API_KEY}&client_secret=${CLIENT_SECRET}`,
     });
 
     const data = await response.json();
@@ -24,16 +22,15 @@ const PetList = () => {
   };
 
   useEffect(() => {
-    // Get the access token first
     getAccessToken().then((accessToken) => {
       fetch(API_ENDPOINT, {
         headers: {
-          Authorization: `Bearer ${accessToken}`, // Use the obtained access token
-        },
+          Authorization: `Bearer ${accessToken}`, 
+        }, 
       })
         .then((response) => response.json())
         .then((data) => {
-          setPets(data.animals); // Assuming the pets are in the 'animals' array
+          setPets(data.animals); 
           setLoading(false);
         })
         .catch((error) => {
@@ -41,15 +38,15 @@ const PetList = () => {
           setLoading(false);
         });
     });
-  }, []);
+  }, [API_KEY, CLIENT_SECRET]); 
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p>Doggy_Loading...</p>;
   }
 
   return (
     <div className="container">
-      <h2>Available Pets</h2>
+      <h2 className="mt-4 mb-4">Available Pets</h2>
       <ul className="list-group">
         {pets.map((pet) => (
           <li key={pet.id} className="list-group-item">
@@ -66,4 +63,6 @@ const PetList = () => {
   );
 };
 
+
 export default PetList;
+
