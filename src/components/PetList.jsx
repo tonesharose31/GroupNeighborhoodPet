@@ -44,18 +44,36 @@ const PetList = () => {
     return <p>Doggy_Loading...</p>;
   }
 
+  if (!pets || pets.length === 0) {
+    return <p>No pets found.</p>;
+  }
+
   return (
     <div className="container">
-      <h2 className="mt-4 mb-4">Available Pets</h2>
+      <h2>Available Pets</h2>
       <ul className="list-group">
         {pets.map((pet) => (
           <li key={pet.id} className="list-group-item">
-            <h3>{pet.name}</h3>
-            <p>Type: {pet.type}</p>
-            <p>Breed: {pet.breeds.primary}</p>
-            <p>Age: {pet.age}</p>
-            <p>Gender: {pet.gender}</p>
-            {/* Add more details as needed */}
+            <div className="row">
+              <div className="col-md-4">
+                {pet.primary_photo_cropped ? (
+                  <img
+                    src={pet.primary_photo_cropped.small}
+                    alt={pet.name}
+                    className="img-fluid rounded"
+                  />
+                ) : (
+                  <p>No photo available</p>
+                )}
+              </div>
+              <div className="col-md-8">
+                <h3>{pet.name}</h3>
+                <p>Type: {pet.type}</p>
+                <p>Breed: {pet.breeds.primary}</p>
+                <p>Age: {pet.age}</p>
+                <p>Gender: {pet.gender}</p>
+              </div>
+            </div>
           </li>
         ))}
       </ul>
@@ -63,6 +81,4 @@ const PetList = () => {
   );
 };
 
-
 export default PetList;
-
